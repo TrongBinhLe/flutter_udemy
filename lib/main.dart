@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import './widgets/user_transactions.dart';
@@ -37,6 +38,16 @@ class MyHomePage extends StatelessWidget {
                 color: Colors.blue,
                 child: Text('CHART!'),
                 elevation: 5,
+              ),
+            ),
+            Center(
+              child: MaterialButton(
+                color: Colors.amber,
+                onPressed: () {
+                  DatabaseReference dbref =
+                      FirebaseDatabase.instance.reference().child('Test');
+                  dbref.set('trogbinhle');
+                },
               ),
             ),
             UserTransactions()
