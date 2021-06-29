@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_udemy/screens/registrationpage.dart';
 import './screens/loginpage.dart';
 
 import './widgets/user_transactions.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter App',
       theme: ThemeData(
           fontFamily: 'Brand-Regular', primaryColor: Colors.deepPurpleAccent),
-      home: Loginpage(),
+      home: RegistrationPage(),
     );
   }
 }

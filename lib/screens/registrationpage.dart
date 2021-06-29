@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart ';
 import 'package:flutter_udemy/brand_colors.dart';
 
-class Loginpage extends StatelessWidget {
+class RegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +23,7 @@ class Loginpage extends StatelessWidget {
                 image: AssetImage('images/logo.png'),
               ),
               Text(
-                'Sign In as a Rider',
+                'Create a Rider\'s Account',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25, fontFamily: 'Brand-Bold'),
               ),
@@ -31,6 +31,18 @@ class Loginpage extends StatelessWidget {
                 padding: EdgeInsets.all(20.0),
                 child: Column(
                   children: [
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: 'Full name',
+                        labelStyle: TextStyle(fontSize: 14.0),
+                        hintStyle:
+                            TextStyle(fontSize: 10.0, color: Colors.grey),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     TextField(
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -41,7 +53,19 @@ class Loginpage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 20.0,
+                      height: 10.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Phone number',
+                        labelStyle: TextStyle(fontSize: 14.0),
+                        hintStyle:
+                            TextStyle(fontSize: 10.0, color: Colors.grey),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
                     ),
                     TextField(
                       obscureText: true,
@@ -63,7 +87,7 @@ class Loginpage extends StatelessWidget {
                         height: 50.0,
                         child: Center(
                           child: Text(
-                            'LOGIN',
+                            'REGISTER',
                             style: TextStyle(
                                 fontSize: 20.0, fontFamily: 'Brand-Bold'),
                           ),
