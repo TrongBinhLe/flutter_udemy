@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart ';
-import 'package:flutter_udemy/brand_colors.dart';
-import 'package:flutter_udemy/screens/registrationpage.dart';
+import '../brand_colors.dart';
+import './registrationpage.dart';
+import '../widgets/taxibutton.dart';
 
 class Loginpage extends StatelessWidget {
   static const String routeName = '\login_page';
@@ -58,24 +59,11 @@ class Loginpage extends StatelessWidget {
                       SizedBox(
                         height: 40.0,
                       ),
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: Container(
-                          height: 50.0,
-                          child: Center(
-                            child: Text(
-                              'LOGIN',
-                              style: TextStyle(
-                                  fontSize: 20.0, fontFamily: 'Brand-Bold'),
-                            ),
-                          ),
-                        ),
+                      TaxiButton(
+                        title: 'LOGIN',
                         color: BrandColors.colorGreen,
-                        textColor: Colors.white,
-                        onPressed: () {},
-                      )
+                        onPress: () {},
+                      ),
                     ],
                   ),
                 ),
