@@ -1,14 +1,67 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart ';
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_udemy/screens/mainpage.dart';
 import '../brand_colors.dart';
 import './registrationpage.dart';
 import '../widgets/taxibutton.dart';
 
-class Loginpage extends StatelessWidget {
+class Loginpage extends StatefulWidget {
   static const String routeName = '\login_page';
+
+  @override
+  _LoginpageState createState() => _LoginpageState();
+}
+
+class _LoginpageState extends State<Loginpage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  var emailController = TextEditingController();
+  var passController = TextEditingController();
+
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  void showSnackbar(String title) {
+    final snackBar = new SnackBar(
+      content: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 15),
+      ),
+    );
+    scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+  void login() async {
+    final FirebaseUser user = (await _auth
+            .signInWithEmailAndPassword(
+                email: emailController.text, password: passController.text)
+            .catchError((ex) {
+      PlatformException thisEx = ex;
+      showSnackbar(thisEx.message);
+    }))
+        .user;
+    if (user != null) {
+      // verify login
+      DatabaseReference userRef =
+          FirebaseDatabase.instance.reference().child('users/${user.uid}');
+      userRef.once().then((DataSnapshot snapshot) => {
+            if (snapshot.value != null)
+              {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, MainPage.routeName, (route) => false)
+              }
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -36,6 +89,7 @@ class Loginpage extends StatelessWidget {
                   child: Column(
                     children: [
                       TextField(
+                        controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           labelText: 'Email address',
@@ -49,6 +103,7 @@ class Loginpage extends StatelessWidget {
                       ),
                       TextField(
                         obscureText: true,
+                        controller: passController,
                         decoration: InputDecoration(
                           labelText: 'Password',
                           labelStyle: TextStyle(fontSize: 14.0),
@@ -62,7 +117,26 @@ class Loginpage extends StatelessWidget {
                       TaxiButton(
                         title: 'LOGIN',
                         color: BrandColors.colorGreen,
-                        onPress: () {},
+                        onPress: () async {
+                          var connectivityResult =
+                              await Connectivity().checkConnectivity();
+                          if (connectivityResult != ConnectivityResult.mobile &&
+                              connectivityResult != ConnectivityResult.wifi) {
+                            showSnackbar('No internet connectivity');
+                            return;
+                          }
+
+                          if (!emailController.text.contains('@')) {
+                            showSnackbar('Please enter a valid email address');
+                            return;
+                          }
+                          if (passController.text.length < 8) {
+                            showSnackbar('Please enter a valid password');
+                            return;
+                          }
+
+                          login();
+                        },
                       ),
                     ],
                   ),

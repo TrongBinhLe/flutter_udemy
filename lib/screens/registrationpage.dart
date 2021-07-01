@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,15 +17,15 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey =
-      new GlobalKey<ScaffoldState>(); // using to define current state.
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   var fullNameController = TextEditingController();
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
   var passController = TextEditingController();
+
+  final GlobalKey<ScaffoldState> scaffoldKey =
+      new GlobalKey<ScaffoldState>(); // using to define current state.
 
   void showSnackbar(String title) {
     final snackBar = new SnackBar(
@@ -151,8 +152,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       TaxiButton(
                         title: 'REGISTER',
                         color: BrandColors.colorGreen,
-                        onPress: () {
+                        onPress: () async {
                           // check network validation
+                          var connectivityResult =
+                              await Connectivity().checkConnectivity();
+                          if (connectivityResult != ConnectivityResult.mobile &&
+                              connectivityResult != ConnectivityResult.wifi) {
+                            showSnackbar('No internet connectivity');
+                            return;
+                          }
 
                           if (fullNameController.text.length < 3) {
                             showSnackbar('Please provide a valid fullname');
