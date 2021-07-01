@@ -5,6 +5,7 @@ import 'package:flutter/material.dart ';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_udemy/screens/mainpage.dart';
+import 'package:flutter_udemy/widgets/progressDialog.dart';
 import '../brand_colors.dart';
 import './registrationpage.dart';
 import '../widgets/taxibutton.dart';
@@ -36,10 +37,18 @@ class _LoginpageState extends State<Loginpage> {
   }
 
   void login() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => ProgressDialog(
+              status: 'Loggin you in',
+            ),
+        barrierDismissible: false);
+
     final FirebaseUser user = (await _auth
             .signInWithEmailAndPassword(
                 email: emailController.text, password: passController.text)
             .catchError((ex) {
+      Navigator.pop(context);
       PlatformException thisEx = ex;
       showSnackbar(thisEx.message);
     }))

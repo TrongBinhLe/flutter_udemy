@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart ';
 import 'package:flutter/services.dart';
 import 'package:flutter_udemy/screens/mainpage.dart';
+import 'package:flutter_udemy/widgets/progressDialog.dart';
 import '../brand_colors.dart';
 import './loginpage.dart';
 import '../widgets/taxibutton.dart';
@@ -39,10 +40,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   void registerUser() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => ProgressDialog(
+              status: 'Registering you ...',
+            ),
+        barrierDismissible: false);
     final FirebaseUser user = (await _auth
             .createUserWithEmailAndPassword(
                 email: emailController.text, password: passController.text)
             .catchError((onError) {
+      Navigator.pop(context);
       // check error and display message
       PlatformException thisEx = onError;
       showSnackbar(thisEx.message);
