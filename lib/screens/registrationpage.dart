@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart ';
+import 'package:flutter/services.dart';
+import 'package:flutter_udemy/screens/mainpage.dart';
 import '../brand_colors.dart';
 import './loginpage.dart';
 import '../widgets/taxibutton.dart';
@@ -13,7 +16,8 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey =
+      new GlobalKey<ScaffoldState>(); // using to define current state.
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -34,15 +38,31 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   void registerUser() async {
-    try {
-      final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-              email: emailController.text, password: passController.text))
-          .user;
-      if (user != null) {
-        print('registration successfull');
-      }
-    } catch (e) {
-      print(e);
+    final FirebaseUser user = (await _auth
+            .createUserWithEmailAndPassword(
+                email: emailController.text, password: passController.text)
+            .catchError((onError) {
+      // check error and display message
+      PlatformException thisEx = onError;
+      showSnackbar(thisEx.message);
+    }))
+        .user;
+
+    if (user != null) {
+      DatabaseReference newUserRef =
+          FirebaseDatabase.instance.reference().child('users/${user.uid}');
+
+      //Prepare data to be saved on users table;
+
+      Map userMap = {
+        'fullname': fullNameController.text,
+        'email': emailController.text,
+        'phone': phoneController.text,
+      };
+
+      newUserRef.set(userMap);
+      Navigator.pushNamedAndRemoveUntil(
+          context, MainPage.routeName, (route) => false);
     }
   }
 
