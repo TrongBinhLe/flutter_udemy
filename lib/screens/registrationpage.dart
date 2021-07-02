@@ -36,7 +36,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         style: TextStyle(fontSize: 15),
       ),
     );
-    scaffoldKey.currentState.showSnackBar(snackBar);
+    // scaffoldKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void registerUser() async {
@@ -52,10 +53,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
             .catchError((onError) {
       Navigator.pop(context);
       // check error and display message
+      print(onError);
       PlatformException thisEx = onError;
       showSnackbar(thisEx.message);
     }))
         .user;
+    Navigator.of(context).pop();
 
     if (user != null) {
       DatabaseReference newUserRef =
@@ -199,7 +202,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 FlatButton(
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        Loginpage.routeName, (route) => false);
+                        LoginPage.routeName, (route) => false);
                   },
                   child: Text('Already have a RIDER account? Log in'),
                 )

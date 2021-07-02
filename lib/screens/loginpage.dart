@@ -10,14 +10,14 @@ import '../brand_colors.dart';
 import './registrationpage.dart';
 import '../widgets/taxibutton.dart';
 
-class Loginpage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   static const String routeName = '\login_page';
 
   @override
-  _LoginpageState createState() => _LoginpageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginpageState extends State<Loginpage> {
+class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   var emailController = TextEditingController();
@@ -33,7 +33,8 @@ class _LoginpageState extends State<Loginpage> {
         style: TextStyle(fontSize: 15),
       ),
     );
-    scaffoldKey.currentState.showSnackBar(snackBar);
+    // scaffoldKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void login() async {
@@ -49,6 +50,7 @@ class _LoginpageState extends State<Loginpage> {
                 email: emailController.text, password: passController.text)
             .catchError((ex) {
       Navigator.pop(context);
+      print(ex);
       PlatformException thisEx = ex;
       showSnackbar(thisEx.message);
     }))

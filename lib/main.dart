@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_udemy/screens/loginpage.dart';
 import 'package:flutter_udemy/screens/mainpage.dart';
 import 'package:flutter_udemy/screens/registrationpage.dart';
 import './screens/loginpage.dart';
@@ -13,12 +14,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: 'Brand-Regular', primaryColor: Colors.deepPurpleAccent),
       home: RegistrationPage(),
-      initialRoute: RegistrationPage.routeName,
+      initialRoute: LoginPage.routeName,
       routes: {
         MainPage.routeName: (context) => MainPage(),
-        Loginpage.routeName: (context) => Loginpage(),
+        LoginPage.routeName: (context) => LoginPage(),
         RegistrationPage.routeName: (context) => RegistrationPage(),
       },
     );
   }
 }
+
+//AIzaSyCnujjx1aRtLg6vlOWWKX16NfvWWEO5bnY

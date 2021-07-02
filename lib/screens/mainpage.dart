@@ -1,49 +1,36 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_udemy/widgets/user_transactions.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MainPage extends StatelessWidget {
   // String titleInput;
   // String amountInput;
   static const routeName = '/mainpage';
-
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController mapController;
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter App'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                child: Text('CHART!'),
-                elevation: 5,
-              ),
-            ),
-            Center(
-              child: MaterialButton(
-                color: Colors.amber,
-                onPressed: () {
-                  DatabaseReference dbref =
-                      FirebaseDatabase.instance.reference().child('Test');
-                  dbref.set('trogbinhle');
-                },
-              ),
-            ),
-            UserTransactions()
-          ],
+        appBar: AppBar(
+          title: Text('Flutter App'),
         ),
-      ),
-    );
+        body: Stack(
+          children: [
+            GoogleMap(
+              initialCameraPosition: _kGooglePlex,
+              mapType: MapType.normal,
+              myLocationButtonEnabled: true,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+                mapController = controller;
+              },
+            )
+          ],
+        ));
   }
 }
