@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: 'Brand-Regular', primaryColor: Colors.deepPurpleAccent),
       home: RegistrationPage(),
-      initialRoute: LoginPage.routeName,
+      initialRoute: MainPage.routeName,
       routes: {
         MainPage.routeName: (context) => MainPage(),
         LoginPage.routeName: (context) => LoginPage(),

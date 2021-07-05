@@ -59,13 +59,15 @@ class _LoginPageState extends State<LoginPage> {
       // verify login
       DatabaseReference userRef =
           FirebaseDatabase.instance.reference().child('users/${user.uid}');
-      userRef.once().then((DataSnapshot snapshot) => {
-            if (snapshot.value != null)
-              {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, MainPage.routeName, (route) => false)
-              }
-          });
+      userRef.once().then(
+            (DataSnapshot snapshot) => {
+              if (snapshot.value != null)
+                {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, MainPage.routeName, (route) => false)
+                }
+            },
+          );
     }
   }
 
